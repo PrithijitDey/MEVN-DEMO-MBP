@@ -4,7 +4,7 @@
       <button class="button" @click="e => navToHome(e)">Books</button>
     </li>
     <li>
-      <button class="button" @click="e => navToAbout(e)">Users</button>
+      <button class="button" @click="e => navToUsers(e)">Users</button>
     </li>
     <li>
       <button class="button" @click="e => navToNote(e)">Notes</button>
@@ -33,9 +33,9 @@ export default defineComponent({
       console.log(e, this.params.username)
       router.push(`/homepage/${this.params.username}`)
     },
-    navToAbout(e: any) {
+    navToUsers(e: any) {
       console.log(e)
-      router.push(`/homepage/${this.params.username}/about`)
+      router.push(`/homepage/${this.params.username}/users`)
     },
     navToNote(e: any) {
       console.log(e)

@@ -126,13 +126,13 @@
       <tbody>
         <tr v-for="d in tableArray" :key="d.id" :id="`row-${d.id}`">
           <td @click=";(companyData = d), (showModal = true)">
-            {{ d.company }}
+            {{ d.book }}
           </td>
           <td @click=";(companyData = d), (showModal = true)">
-            {{ d.contact }}
+            {{ d.author }}
           </td>
           <td @click=";(companyData = d), (showModal = true)">
-            {{ d.country }}
+            {{ d.booksmith }}
           </td>
 
           <td>
@@ -171,7 +171,7 @@
         @close="showModal = false"
       >
         <template #header>
-          <h3>Company Details</h3>
+          <h3>Book Details</h3>
         </template>
       </modal>
     </Teleport>
@@ -191,17 +191,27 @@ export default defineComponent({
     Modal,
     Vue3Html2pdf
   },
-  setup() {
-    const tabArray = inject('tableArray')
-    const lang = ref()
+  // setup() {
+  //   const tabArray = inject('tableArray')
+  //   const lang = ref()
 
-    watch(lang, (newValue: number) => {
-      console.log(tabArray)
+  //   watch(lang, (newValue: number) => {
+  //     console.log(tabArray)
 
-      // console.log((tabArray as Record<string, any>[]).slice(0, newValue - 1))
-    })
+  //     // console.log((tabArray as Record<string, any>[]).slice(0, newValue - 1))
+  //   })
 
-    return { lang }
+  //   return { lang }
+  // },
+  async created() {
+    try {
+      const res = await axios.get(`/books/get-book`)
+      this.dataArray = res.data.data
+      this.tableArray = this.dataArray
+      console.log(res)
+    } catch (error) {
+      console.log(error)
+    }
   },
   data() {
     return {
@@ -214,28 +224,28 @@ export default defineComponent({
     }
   },
 
-  async created() {
-    try {
-      const res = await axios.get(`http://localhost:3000/dataArray`)
-      this.dataArray = res.data
-      this.tableArray = this.dataArray
-      console.log(res)
-    } catch (error) {
-      console.log(error)
-    }
-  },
+  // async created() {
+  //   try {
+  //     const res = await axios.get(`http://localhost:3000/dataArray`)
+  //     this.dataArray = res.data
+  //     this.tableArray = this.dataArray
+  //     console.log(res)
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // },
 
-  async deleteData(id: number) {
-    try {
-      const res = await axios.delete(`http://localhost:3000/dataArray/${id}`)
-      this.dataArray = this.dataArray.filter(
-        (dataArray: any) => dataArray.id !== id
-      )
-      console.log(res)
-    } catch (error) {
-      console.log(error)
-    }
-  },
+  // async deleteData(id: number) {
+  //   try {
+  //     const res = await axios.delete(`http://localhost:3000/dataArray/${id}`)
+  //     this.dataArray = this.dataArray.filter(
+  //       (dataArray: any) => dataArray.id !== id
+  //     )
+  //     console.log(res)
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // },
 
   methods: {
     // openModal(companyData: any) {
@@ -243,9 +253,12 @@ export default defineComponent({
     //   this.companyData = companyData.id
     //   console.log('--------', companyData)
     // }
-    addBook() {
-      console.log('add book')
+    addBook(payload: Record<string, any>) {
+      //return axios.post('/books/add-book', payload)
+      console.log("add-book");
+      
     },
+    
     deleteData(id: number) {
       // window.alert("hi")
       console.log('id----', id)

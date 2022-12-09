@@ -147,7 +147,7 @@
       </select>
       <Teleport to="body">
         <modal
-          :userData="userData"
+          :Data="userData"
           :show="showModal"
           @close="showModal = false"
         >
@@ -167,7 +167,7 @@ import axios from 'axios'
 import Modal from './Modal.vue'
 
 export default defineComponent({
-  name: 'about',
+  name: 'users',
   components: {
     Modal
   },
@@ -212,7 +212,7 @@ export default defineComponent({
   methods: {
     deleteData(id: number) {
       // window.alert("hi")
-      console.log('id----', id)
+      console.log('feature will be available soon')
       // this.dataArray.splice(id - 1)
       // delete(this.dataArray[id])
       console.log('---', this.dataArray)

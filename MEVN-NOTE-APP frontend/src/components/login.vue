@@ -52,22 +52,17 @@ export default defineComponent({
     }
   },
   methods: {
-    signUp(payload: Record<string, any>) {
+    login(payload: Record<string, any>) {
       return axios.post('/user/login', payload)
     },
 
     async handleSubmit() {
       try {
-        const response = await this.signUp(this.form)
-        console.log(response.status)
-        if (response.status === 200) {
-          router.push({ path: `/homepage/${this.form.username}` })
-        }
-        else{
-          console.log("else hit")
-          window.alert(response.data.message)
-        }
-      } catch (error) {}
+        const response = await this.login(this.form)
+        router.push({ path: `/homepage/${this.form.username}` })
+      } catch (error: any) {
+        window.alert(error.response.data.message)
+      }
     }
   }
 })

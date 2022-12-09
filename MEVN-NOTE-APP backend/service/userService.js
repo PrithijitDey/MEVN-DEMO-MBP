@@ -37,7 +37,6 @@ let userService = {
       const availabilityResponse = await User.findOne({
         $or: [{ email }, { username }],
       });
-      console.log("------", availabilityResponse);
 
       if (!availabilityResponse) {
         const response = await User.create(data);
@@ -51,16 +50,18 @@ let userService = {
           },
         };
       } else {
-        if (availabilityResponse.email == email && availabilityResponse.username == username ) {
-            return {
-              status: http_code.BAD_REQUEST,
-              data: {
-                status: false,
-                message: "User already exists.",
-              },
-            };
-          }
-        else if (availabilityResponse.email == email) {
+        if (
+          availabilityResponse.email == email &&
+          availabilityResponse.username == username
+        ) {
+          return {
+            status: http_code.BAD_REQUEST,
+            data: {
+              status: false,
+              message: "User already exists.",
+            },
+          };
+        } else if (availabilityResponse.email == email) {
           return {
             status: http_code.BAD_REQUEST,
             data: {
@@ -68,16 +69,15 @@ let userService = {
               message: "Email already exists.",
             },
           };
+        } else if (availabilityResponse.username == username) {
+          return {
+            status: http_code.BAD_REQUEST,
+            data: {
+              status: false,
+              message: "Username already exists.",
+            },
+          };
         }
-        else if (availabilityResponse.username == username) {
-            return {
-              status: http_code.BAD_REQUEST,
-              data: {
-                status: false,
-                message: "Username already exists.",
-              },
-            };
-          }
       }
     } catch (error) {
       return {

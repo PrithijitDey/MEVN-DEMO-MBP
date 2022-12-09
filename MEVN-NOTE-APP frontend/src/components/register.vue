@@ -93,8 +93,8 @@ export default defineComponent({
         const response = await this.signUp(this.form)
         console.log(response)
 
-        // router.push({ path: `/homepage/${form.username}` });
-      } catch (error) {}
+        router.push({ path: '/' })
+      } catch (error:any) {window.alert(error.response.data.message)}
     }
   }
 })

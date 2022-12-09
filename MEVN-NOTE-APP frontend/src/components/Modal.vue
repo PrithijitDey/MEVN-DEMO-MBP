@@ -1,28 +1,26 @@
 <script lang="ts">
-import axios from 'axios'
 
 export default {
   props: {
     show: Boolean,
-    companyData: <any>{
-      id: Number,
-      company: String,
-      contact: String,
-      country: String
+    Data: <any>{
+      name: String,
+      username: String,
+      email: String
     }
   },
-//   async EditItem(id:number) {
-//     try {
-//         await axios.patch(`${`http://localhost:3000/dataArray`}/${id}`, {
-//             boughtItem: true
-//         });
-//         let data = this.companyData
-//             return data;
-        
-//     } catch (error) {
-//         console.error(error);
-//     }
-// },
+  //   async EditItem(id:number) {
+  //     try {
+  //         await axios.patch(`${`http://localhost:3000/dataArray`}/${id}`, {
+  //             boughtItem: true
+  //         });
+  //         let data = this.companyData
+  //             return data;
+
+  //     } catch (error) {
+  //         console.error(error);
+  //     }
+  // },
   methods: {
     reload() {
       location.reload()
@@ -37,14 +35,14 @@ export default {
       <div class="modal-wrapper">
         <div class="modal-container">
           <div class="modal-header">
-            <slot name="header">Company Details</slot>
+            <slot name="header">User Details</slot>
           </div>
           <div class="modal-body">
-            <input name="body" v-model="companyData.company" class="data" />
+            <input name="body" v-model="Data.name" class="data" />
 
-            <input name="body" v-model="companyData.contact" class="data" />
+            <input name="body" v-model="Data.username" class="data" />
 
-            <input name="body" v-model="companyData.country" class="data" />
+            <input name="body" v-model="Data.email" class="data" />
           </div>
           <div class="modal-footer">
             <button class="modal-default-button" @click="reload">CANCEL</button>
