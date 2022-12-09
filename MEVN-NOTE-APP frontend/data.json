@@ -1,0 +1,58 @@
+{
+  "dataArray": [
+    {
+      "id": 1,
+      "company": "Alfreds Futterkiste",
+      "contact": "Maria Anders",
+      "country": "Germany"
+    },
+    {
+      "id": 2,
+      "company": "Centro comercial Moctezuma",
+      "contact": "Francisco Chang",
+      "country": "Mexico"
+    },
+    {
+      "id": 3,
+      "company": "Central Private Militia",
+      "contact": "Shang Chi",
+      "country": "China"
+    },
+    {
+      "id": 4,
+      "company": "Western Saviour Ward",
+      "contact": "Steve Rogers",
+      "country": "America"
+    },
+    {
+      "id": 5,
+      "company": "Strategic Homeland Security",
+      "contact": "Margarret Carter",
+      "country": "England"
+    },
+    {
+      "id": 6,
+      "company": "Eastern Defence Ward",
+      "contact": "Bucky Barnes",
+      "country": "America"
+    },
+    {
+      "id": 7,
+      "company": "Mediterranean Styling Ward",
+      "contact": "Maria Hill",
+      "country": "America"
+    },
+    {
+      "id": 8,
+      "company": "Central Food Ward",
+      "contact": "Peter Parker",
+      "country": "America"
+    },
+    {
+      "id": 9,
+      "company": "Wakanda Outreach Program",
+      "contact": "T'Chala",
+      "country": "Wakanda"
+    }
+  ]
+}
