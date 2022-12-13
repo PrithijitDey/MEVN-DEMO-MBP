@@ -91,8 +91,6 @@ export default defineComponent({
     async handleSubmit() {
       try {
         const response = await this.signUp(this.form)
-        console.log(response)
-
         router.push({ path: '/' })
       } catch (error:any) {window.alert(error.response.data.message)}
     }

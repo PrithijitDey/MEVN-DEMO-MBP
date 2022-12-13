@@ -16,22 +16,29 @@ let userService = {
             },
             process.env.TOKEN_KEY,
             {
-              expiresIn: "1m",
+              expiresIn: "8h",
             }
           );
 
           response.token = token;
+
+          let updateResponse = await User.findByIdAndUpdate(
+            response._id,
+            { $set: { token: token } },
+            { new: true }
+          );
+
           return {
             status: http_code.OK,
             data: {
               status: true,
               message: "Login Successfully",
               data: {
-                id: response._id,
-                name: response.name,
-                username: response.username,
-                email: response.email,
-                token: response.token,
+                id: updateResponse._id,
+                name: updateResponse.name,
+                username: updateResponse.username,
+                email: updateResponse.email,
+                token: updateResponse.token,
               },
             },
           };
@@ -108,6 +115,32 @@ let userService = {
     } catch (error) {
       return {
         status: http_code.INTERNAL_SERVER_ERROR,
+        data: {
+          status: false,
+          message: error.message,
+        },
+      };
+    }
+  },
+
+  logout: async (data) => {
+    try {
+      let response = await User.findByIdAndUpdate(
+        data.id,
+        { $set: { token: "" } },
+        { new: true }
+      );
+      return {
+        status: http_code.OK,
+        data: {
+          status: true,
+          message: "Logout Successfully",
+          data: response,
+        },
+      };
+    } catch (error) {
+      return {
+        status: http_code.BAD_REQUEST,
         data: {
           status: false,
           message: error.message,
@@ -202,81 +235,5 @@ let userService = {
       };
     }
   },
-  // company_list: async () => {
-  //     try {
-  //         let response = await User.find({}, "company.name");
-  //         return {
-  //             status: http_code.OK, data: {
-  //                 status: true,
-  //                 message: 'Company List Get Successfully',
-  //                 data: response
-  //             }
-  //         };
-  //     } catch (error) {
-  //         return {
-  //             status: http_code.INTERNAL_SERVER_ERROR, data: {
-  //                 status: false,
-  //                 message: error.message
-  //             }
-  //         };
-  //     }
-  // },
-  // search: async (res) => {
-  //     try {
-  //         console.log(res);
-  //         let search_query=[];
-  //         if (res.hasOwnProperty('search')) {
-  //             search_query = [
-  //                 {
-  //                     $addFields: {
-  //                         "name_s": { $toLower: "$name" },
-  //                         "username_s": { $toLower: "$username" },
-  //                         "email_s": { $toLower: "$email" }
-  //                     }
-  //                 },
-  //                 {
-  //                     $match: {
-  //                         $or: [
-  //                             { "name_s": { $regex: res.search } },
-  //                             { "username_s": { $regex: res.search } },
-  //                             { "email_s": { $regex: res.search } },
-  //                             { "phone": { $regex: res.search } }
-  //                         ]
-  //                     }
-  //                 },
-  //                 {
-  //                     $project:
-  //                     {
-  //                         name_s: 0,
-  //                         email_s: 0,
-  //                         username_s: 0
-  //                     }
-  //                 },
-  //             ];
-  //         }
-  //         if (res.hasOwnProperty('company')) {
-  //             search_query.push({
-  //                 $match: {
-  //                     "company.name": res.company
-  //                 }
-  //             })
-  //         }
-  //         let response = await User.aggregate(search_query)
-  //         return {
-  //             status: http_code.OK, data: {
-  //                 status: true,
-  //                 message: 'User List Get Successfully',
-  //                 data: response
-  //             }
-  //         };
-  //     } catch (error) {
-  //         return {
-  //             status: http_code.INTERNAL_SERVER_ERROR, data: {
-  //                 status: false,
-  //                 message: error.message
-  //             }
-  //         };
-  //     }
-  // },
 };
 module.exports = userService;

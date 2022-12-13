@@ -1,6 +1,9 @@
 <template>
   <div class="app">
     <form @submit.prevent="handleSubmit" class="form">
+      <img
+        src="https://www.advanceinnovationgroup.com/blog/uploads/images/image_750x_5cc19d28aa796.jpg"
+      />
       <div class="creds">
         <br />
         <input
@@ -36,7 +39,7 @@ export default defineComponent({
   components: {},
 
   // setup() {
-    
+
   // },
   data() {
     return {
@@ -55,7 +58,7 @@ export default defineComponent({
       try {
         const response = await this.login(this.form)
 
-        localStorage.setItem("userData",JSON.stringify(response.data?.data));
+        localStorage.setItem('userData', JSON.stringify(response.data?.data))
         router.push({ path: `/homepage/${this.form.username}` })
       } catch (error: any) {
         window.alert(error.response.data.message)
@@ -78,6 +81,10 @@ export default defineComponent({
 .form {
   display: grid;
   place-items: center;
+}
+img {
+  height: 150px;
+  width: 160px;
 }
 .creds {
   margin-top: px;

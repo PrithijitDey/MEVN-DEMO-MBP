@@ -15,6 +15,7 @@
 </template>
 
 <script lang="ts">
+import axios from 'axios'
 import { defineComponent, onMounted } from 'vue'
 import router from '../router'
 
@@ -26,7 +27,6 @@ export default defineComponent({
   }),
 
   methods: {
-    
     navToHome(e: any) {
       console.log(e, this.params.username)
       router.push(`/homepage/${this.params.username}`)
@@ -40,7 +40,9 @@ export default defineComponent({
       router.push(`/homepage/${this.params.username}/notes`)
     },
     logout() {
-      localStorage.removeItem("userData")
+      let userData = JSON.parse(localStorage.getItem('userData') as string)
+      axios.get(`/user/logout?id=${userData.id}`)
+      localStorage.removeItem('userData')
       router.push('/')
     }
   }
