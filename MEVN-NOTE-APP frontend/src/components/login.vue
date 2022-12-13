@@ -36,12 +36,7 @@ export default defineComponent({
   components: {},
 
   // setup() {
-  //   const form = reactive({
-  //     username: '',
-  //     password: ''
-  //   })
-
-  //   return { form, onSubmit }
+    
   // },
   data() {
     return {
@@ -59,6 +54,8 @@ export default defineComponent({
     async handleSubmit() {
       try {
         const response = await this.login(this.form)
+
+        localStorage.setItem("userData",JSON.stringify(response.data?.data));
         router.push({ path: `/homepage/${this.form.username}` })
       } catch (error: any) {
         window.alert(error.response.data.message)

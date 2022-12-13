@@ -26,9 +26,7 @@ export default defineComponent({
   }),
 
   methods: {
-    Logout() {
-      console.log('logged out')
-    },
+    
     navToHome(e: any) {
       console.log(e, this.params.username)
       router.push(`/homepage/${this.params.username}`)
@@ -42,6 +40,7 @@ export default defineComponent({
       router.push(`/homepage/${this.params.username}/notes`)
     },
     logout() {
+      localStorage.removeItem("userData")
       router.push('/')
     }
   }

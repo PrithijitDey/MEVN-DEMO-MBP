@@ -1,17 +1,38 @@
 const http_code = require("http-status-codes").StatusCodes;
 const User = require("../db/models/user");
+const jwt = require("jsonwebtoken");
+
 let userService = {
   login: async (data) => {
     try {
       let response = await User.findOne({ username: data.username });
       if (response != null) {
         if (response.password == data.password) {
+          const token = await jwt.sign(
+            {
+              user_id: response._id,
+              name: response.name,
+              email: response.email,
+            },
+            process.env.TOKEN_KEY,
+            {
+              expiresIn: "1m",
+            }
+          );
+
+          response.token = token;
           return {
             status: http_code.OK,
             data: {
               status: true,
               message: "Login Successfully",
-              data: response,
+              data: {
+                id: response._id,
+                name: response.name,
+                username: response.username,
+                email: response.email,
+                token: response.token,
+              },
             },
           };
         } else {
@@ -46,7 +67,12 @@ let userService = {
           data: {
             status: true,
             message: "Register Successfully",
-            data: response,
+            data: {
+              id: response._id,
+              name: response.name,
+              username: response.username,
+              email: response.email,
+            },
           },
         };
       } else {
