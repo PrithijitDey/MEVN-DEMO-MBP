@@ -6,9 +6,9 @@
     <li>
       <button class="button" @click="e => navToUsers(e)">Users</button>
     </li>
-    <li>
+    <!-- <li>
       <button class="button" @click="e => navToNote(e)">Notes</button>
-    </li>
+    </li> -->
   </ul>
 
   <button class="logout-button" @click="logout()">Logout</button>
@@ -29,15 +29,15 @@ export default defineComponent({
   methods: {
     navToHome(e: any) {
       console.log(e, this.params.username)
-      router.push(`/homepage/${this.params.username}`)
+      router.push(`/homepage`)
     },
     navToUsers(e: any) {
       console.log(e)
-      router.push(`/homepage/${this.params.username}/users`)
+      router.push(`/homepage/users`)
     },
     navToNote(e: any) {
       console.log(e)
-      router.push(`/homepage/${this.params.username}/notes`)
+      router.push(`/homepage/notes`)
     },
     logout() {
       let userData = JSON.parse(localStorage.getItem('userData') as string)

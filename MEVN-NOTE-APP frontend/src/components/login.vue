@@ -59,7 +59,7 @@ export default defineComponent({
         const response = await this.login(this.form)
 
         localStorage.setItem('userData', JSON.stringify(response.data?.data))
-        router.push({ path: `/homepage/${this.form.username}` })
+        router.push({ path: `/homepage` })
       } catch (error: any) {
         window.alert(error.response.data.message)
       }

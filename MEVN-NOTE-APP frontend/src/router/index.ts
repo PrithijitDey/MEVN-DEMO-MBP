@@ -19,7 +19,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: { auth: false }
   },
   {
-    path: '/homepage/:username',
+    path: '/homepage',
     name: 'homepage',
     meta: { auth: true },
 
@@ -27,7 +27,7 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       { path: '', name: 'table', component: Table, meta: { auth: true } },
       { path: 'users', name: 'users', component: Users, meta: { auth: true } },
-      { path: 'notes', name: 'notes', component: Notes, meta: { auth: true } }
+      { path: 'notes/:bookID', name: 'notes', component: Notes, meta: { auth: true } }
     ]
   }
 ]
@@ -46,7 +46,7 @@ router.beforeEach(async (to, from, next) => {
     localStorage.getItem('userData') &&
     from.name !== 'login'
   ) {
-    next(`/homepage/${user.username}`)
+    next(`/homepage`)
 
     //  next('/');
     return { name: 'login' }

@@ -41,6 +41,7 @@ let bookService = {
     }
   },
   update: async (_id, data) => {
+    console.log(data);
     try {
       let response = await Book.findByIdAndUpdate(
         _id,
@@ -65,9 +66,38 @@ let bookService = {
       };
     }
   },
-  book_details: async (body) => {
+  book_list: async (data) => {
     try {
-      let response = await Book.find(body);
+      let query = {};
+      if(data.query.id != undefined && data.query.id != null){
+        query['_id']=data.query.id;
+      }
+      let response = await Book.find(query);
+      return {
+        status: http_code.OK,
+        data: {
+          status: true,
+          message: "GET book-list Successfully",
+          data: response,
+        },
+      };
+    } catch (error) {
+      return {
+        status: http_code.INTERNAL_SERVER_ERROR,
+        data: {
+          status: false,
+          message: error.message,
+        },
+      };
+    }
+  },
+  book_details: async (data) => {
+    try {
+      let query = {};
+      if(data.query.id != undefined && data.query.id != null){
+        query['_id']=data.query.id;
+      }
+      let response = await Book.findOne(query);
       return {
         status: http_code.OK,
         data: {
@@ -86,81 +116,30 @@ let bookService = {
       };
     }
   },
-  // company_list: async () => {
-  //     try {
-  //         let response = await User.find({}, "company.name");
-  //         return {
-  //             status: http_code.OK, data: {
-  //                 status: true,
-  //                 message: 'Company List Get Successfully',
-  //                 data: response
-  //             }
-  //         };
-  //     } catch (error) {
-  //         return {
-  //             status: http_code.INTERNAL_SERVER_ERROR, data: {
-  //                 status: false,
-  //                 message: error.message
-  //             }
-  //         };
-  //     }
+  // getBook: async (_id) => {
+  //   try {
+  //     let response = await Book.findById(
+  //       _id
+        
+  //     );
+  //     return {
+  //       status: http_code.OK,
+  //       data: {
+  //         status: true,
+  //         message: "Got selected Book Successfully",
+  //         data: response,
+  //       },
+  //     };
+  //   } catch (error) {
+  //     return {
+  //       status: http_code.INTERNAL_SERVER_ERROR,
+  //       data: {
+  //         status: false,
+  //         message: error.message,
+  //       },
+  //     };
+  //   }
   // },
-  // search: async (res) => {
-  //     try {
-  //         console.log(res);
-  //         let search_query=[];
-  //         if (res.hasOwnProperty('search')) {
-  //             search_query = [
-  //                 {
-  //                     $addFields: {
-  //                         "name_s": { $toLower: "$name" },
-  //                         "username_s": { $toLower: "$username" },
-  //                         "email_s": { $toLower: "$email" }
-  //                     }
-  //                 },
-  //                 {
-  //                     $match: {
-  //                         $or: [
-  //                             { "name_s": { $regex: res.search } },
-  //                             { "username_s": { $regex: res.search } },
-  //                             { "email_s": { $regex: res.search } },
-  //                             { "phone": { $regex: res.search } }
-  //                         ]
-  //                     }
-  //                 },
-  //                 {
-  //                     $project:
-  //                     {
-  //                         name_s: 0,
-  //                         email_s: 0,
-  //                         username_s: 0
-  //                     }
-  //                 },
-  //             ];
-  //         }
-  //         if (res.hasOwnProperty('company')) {
-  //             search_query.push({
-  //                 $match: {
-  //                     "company.name": res.company
-  //                 }
-  //             })
-  //         }
-  //         let response = await User.aggregate(search_query)
-  //         return {
-  //             status: http_code.OK, data: {
-  //                 status: true,
-  //                 message: 'User List Get Successfully',
-  //                 data: response
-  //             }
-  //         };
-  //     } catch (error) {
-  //         return {
-  //             status: http_code.INTERNAL_SERVER_ERROR, data: {
-  //                 status: false,
-  //                 message: error.message
-  //             }
-  //         };
-  //     }
-  // },
+
 };
 module.exports = bookService;

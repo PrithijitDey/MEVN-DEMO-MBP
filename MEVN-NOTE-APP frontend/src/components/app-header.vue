@@ -1,7 +1,7 @@
 <template>
   <div class="header-container">
     <div class="header-text">
-      <h2 class="app-heading">Welcome,{{ loggeduser }}</h2>
+      <h2 class="app-heading">Welcome,{{user.username }}</h2>
       <div class="online"></div>
       <!-- <button class="btn btn-primary" @click="userStore.logout()">
       Logout
@@ -12,17 +12,13 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { computed, reactive } from 'vue'
 
-const state = reactive({
-  username: ''
-})
-const getters = reactive({
-  isLoggedIn: computed(() => state.username !== '')
-})
 export default defineComponent({
-  props: ['loggeduser'],
-  name: 'Header'
+  name: 'Header',
+  data(){
+    return { user : JSON.parse(<string>localStorage.getItem('userData'))}
+
+  }
 })
 </script>
 

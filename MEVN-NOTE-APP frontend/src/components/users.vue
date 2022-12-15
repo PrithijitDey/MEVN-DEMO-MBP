@@ -1,163 +1,168 @@
-  <template class="h-full w-full">
-    <div class="table-container">
-      <v-card-title class="search">
-        <v-text-field
-          class="search-text-field"
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="Search"
-          single-line
-          hide-details
-        ></v-text-field>
-        <v-btn class="search-button" @click="searchTable">Search </v-btn>
-      </v-card-title>
-      <v-table class="table-component" id="myTable" fixed-header height="300px">
-        <thead>
-          <tr class="table-header">
-            <th class="text-center">
-              Name
-              <span>
-                <svg
-                  class="company-asc"
-                  @click="sortTableByCompanyAscending()"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="12"
-                  height="12"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="grey"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M12 19V6M5 12l7-7 7 7" />
-                </svg>
-                <svg
-                  class="company-desc"
-                  @click="sortTableByCompanyDecending()"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="12"
-                  height="12"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="grey"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M12 5v13M5 12l7 7 7-7" />
-                </svg>
-              </span>
-            </th>
-            <th class="text-center">
-              Username
-              <span>
-                <svg
-                  class="contact-asc"
-                  @click="sortTableByContactAscending()"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="12"
-                  height="12"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="grey"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M12 19V6M5 12l7-7 7 7" />
-                </svg>
-                <svg
-                  class="contact-desc"
-                  @click="sortTableByContactDecending()"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="12"
-                  height="12"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="grey"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M12 5v13M5 12l7 7 7-7" />
-                </svg>
-              </span>
-            </th>
-            <th class="text-center">
-              Email
-              <span>
-                <svg
-                  class="country-asc"
-                  @click="sortTableByCountryAscending()"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="12"
-                  height="12"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="grey"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M12 19V6M5 12l7-7 7 7" />
-                </svg>
-                <svg
-                  class="country-desc"
-                  @click="sortTableByCountryDecending()"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="12"
-                  height="12"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="grey"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M12 5v13M5 12l7 7 7-7" />
-                </svg>
-              </span>
-            </th>
-            <th class="text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="d in tableArray" :key="d.id" :id="`row-${d.id}`">
-            <td @click=";(userData = d), (showModal = true)">
-              {{ d.name }}
-            </td>
-            <td @click=";(userData = d), (showModal = true)">
-              {{ d.username }}
-            </td>
-            <td @click=";(userData = d), (showModal = true)">
-              {{ d.email }}
-            </td>
+<template class="h-full w-full">
+  <div class="table-container">
+    <v-card-title class="search">
+      <v-text-field
+        class="search-text-field"
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Search"
+        single-line
+        hide-details
+      ></v-text-field>
+      <v-btn class="search-button" @click="searchTable">Search </v-btn>
+    </v-card-title>
+    <v-table class="table-component" id="myTable" fixed-header height="300px">
+      <thead>
+        <tr class="table-header">
+          <th class="text-center">
+            Name
+            <span>
+              <svg
+                class="company-asc"
+                @click="sortTableByCompanyAscending()"
+                xmlns="http://www.w3.org/2000/svg"
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="grey"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 19V6M5 12l7-7 7 7" />
+              </svg>
+              <svg
+                class="company-desc"
+                @click="sortTableByCompanyDecending()"
+                xmlns="http://www.w3.org/2000/svg"
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="grey"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 5v13M5 12l7 7 7-7" />
+              </svg>
+            </span>
+          </th>
+          <th class="text-center">
+            Username
+            <span>
+              <svg
+                class="contact-asc"
+                @click="sortTableByContactAscending()"
+                xmlns="http://www.w3.org/2000/svg"
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="grey"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 19V6M5 12l7-7 7 7" />
+              </svg>
+              <svg
+                class="contact-desc"
+                @click="sortTableByContactDecending()"
+                xmlns="http://www.w3.org/2000/svg"
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="grey"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 5v13M5 12l7 7 7-7" />
+              </svg>
+            </span>
+          </th>
+          <th class="text-center">
+            Email
+            <span>
+              <svg
+                class="country-asc"
+                @click="sortTableByCountryAscending()"
+                xmlns="http://www.w3.org/2000/svg"
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="grey"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 19V6M5 12l7-7 7 7" />
+              </svg>
+              <svg
+                class="country-desc"
+                @click="sortTableByCountryDecending()"
+                xmlns="http://www.w3.org/2000/svg"
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="grey"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 5v13M5 12l7 7 7-7" />
+              </svg>
+            </span>
+          </th>
+          <th class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="d in tableArray" :key="d.id" :id="`row-${d.id}`">
+          <td @click=";(userData = d), (showModal = true)">
+            {{ d.name }}
+          </td>
+          <td @click=";(userData = d), (showModal = true)">
+            {{ d.username }}
+          </td>
+          <td @click=";(userData = d), (showModal = true)">
+            {{ d.email }}
+          </td>
 
-            <td>
-              <delete-icon @click="deleteData(d.id)" />
-            </td>
-          </tr>
-        </tbody>
-      </v-table>
-      <label class="dropdown-label">Number of items:</label>
-      <select class="dropdown" @change="e => filterItems(e)">
-        <option value="10">10</option>
-        <option value="5">5</option>
-      </select>
-      <Teleport to="body">
-        <modal
-          :Data="userData"
-          :show="showModal"
-          @close="showModal = false"
-        >
-          <template #header>
-            <h3>User Details</h3>
-          </template>
-        </modal>
-      </Teleport>
-    </div>
-  </template>
+          <td>
+            <delete-icon @click="deleteData(d.id)" />
+          </td>
+        </tr>
+      </tbody>
+    </v-table>
+    <label class="dropdown-label">Number of items:</label>
+    <select class="dropdown" @change="e => filterItems(e)">
+      <option value="100">100</option>
+      <option value="50">50</option>
+      <option value="10">10</option>
+      <option value="5">05</option>
+    </select>
+    <Teleport to="body">
+      <modal :Data="userData" :show="showModal" @close="showModal = false">
+        <template #header>
+          <h3>User Details</h3>
+          <!-- <div class="modal-body">
+            <input name="body" v-model="userData.name" class="data" />
+
+            <input name="body" v-model="userData.username" class="data" />
+
+            <input name="body" v-model="userData.email" class="data" />
+          </div> -->
+        </template>
+      </modal>
+    </Teleport>
+  </div>
+</template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
@@ -176,7 +181,7 @@ export default defineComponent({
       search: '',
       itemsOnTable: 0,
       showModal: false,
-      userData: {},
+      userData: {} as any,
       dataArray: <Record<string, any>>[],
       tableArray: <Record<string, any>>[]
     }
@@ -232,9 +237,9 @@ export default defineComponent({
 
       this.tableArray = this.tableArray.filter((item: Record<string, any>) => {
         return (
-          searchRegExp.test(item.company) ||
-          searchRegExp.test(item.contact) ||
-          searchRegExp.test(item.country)
+          searchRegExp.test(item.name) ||
+          searchRegExp.test(item.username) ||
+          searchRegExp.test(item.email)
         )
       })
 
@@ -339,8 +344,7 @@ svg {
   border-right: 1px solid black;
   border-radius: 0 5px 0 0;
 }
-.dropdown-container{
-
+.dropdown-container {
 }
 .dropdown {
   position: absolute;
@@ -348,7 +352,7 @@ svg {
   right: 145px;
   width: 3.5rem;
   height: 2rem;
-  padding: 5px;
+  padding: 3px;
   text-align: center;
   border: 1px solid grey;
   border-radius: 5px;
@@ -357,16 +361,15 @@ svg {
 span {
   cursor: pointer;
 }
-option{
+option {
   text-align: center;
 }
-.dropdown-label{
+.dropdown-label {
   position: absolute;
   bottom: auto;
   right: 200px;
   padding: 5px;
   margin-top: 10px;
-
 }
 .table-component::-webkit-scrollbar {
   background-color: transparent;

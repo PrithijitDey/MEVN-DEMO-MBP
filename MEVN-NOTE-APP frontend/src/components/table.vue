@@ -11,7 +11,6 @@
       ></v-text-field>
       <v-btn class="search-button" @click="searchTable">Search </v-btn>
     </v-card-title>
-
     <v-table class="table-component" id="myTable" fixed-header height="300px">
       <thead>
         <tr class="table-header">
@@ -124,14 +123,19 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="d in tableArray" :key="d.id" :id="`row-${d.id}`">
-          <td @click=";(companyData = d), (showModal = true)">
+        <tr
+          v-for="d in tableArray"
+          :key="d._id"
+          :id="`row-${d._id}`"
+          @click="navToNotes(d._id)"
+        >
+          <td>
             {{ d.book }}
           </td>
-          <td @click=";(companyData = d), (showModal = true)">
+          <td>
             {{ d.author }}
           </td>
-          <td @click=";(companyData = d), (showModal = true)">
+          <td>
             {{ d.booksmith }}
           </td>
 
@@ -142,7 +146,36 @@
         </tr>
       </tbody>
     </v-table>
-    <v-btn class="add-btn" depressed color="primary" @click="addBook"
+
+    <div class="text-center">
+      <v-dialog v-model="dialog" width="300">
+        <v-card>
+          <v-card-title class="text-h5 grey lighten-2"> Add Book </v-card-title>
+
+          <v-card-text>
+            <input name="body" v-model="data.book" class="data" />
+
+            <input name="body" v-model="data.author" class="data" />
+
+            <input name="body" v-model="data.booksmith" class="data" />
+            <div class="modal-footer">
+              <button class="modal-default-button" @click="dialog = false">
+                CANCEL
+              </button>
+              <button class="modal-default-button" @click="addBook">
+                SAVE
+              </button>
+            </div>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+    </div>
+
+    <v-btn
+      class="add-btn"
+      depressed
+      color="primary"
+      @click="addBook, (dialog = true)"
       ><svg
         xmlns="http://www.w3.org/2000/svg"
         width="18"
@@ -161,34 +194,34 @@
     >
     <label class="dropdown-label">Number of items:</label>
     <select class="dropdown" @change="e => filterItems(e)">
+      <option value="100">100</option>
+      <option value="50">50</option>
       <option value="10">10</option>
-      <option value="5">5</option>
+      <option value="5">05</option>
     </select>
-    <Teleport to="body">
-      <modal
-        :companyData="companyData"
-        :show="showModal"
-        @close="showModal = false"
-      >
-        <template #header>
-          <h3>Book Details</h3>
-        </template>
-      </modal>
-    </Teleport>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, inject } from 'vue'
-import Modal from './Modal.vue'
 import axios from 'axios'
 import Vue3Html2pdf from 'vue3-html2pdf'
 import { jsPDF } from 'jspdf'
-import { ref, watch } from 'vue'
-
+import router from '@/router'
+type Note = {
+  id: number
+  text: string
+  x: number
+  y: number
+}
+type Data = {
+  book: string
+  author: string
+  booksmith: string
+  notes: Note[]
+}
 export default defineComponent({
   name: 'table',
   components: {
-    Modal,
     Vue3Html2pdf
   },
   // setup() {
@@ -205,7 +238,7 @@ export default defineComponent({
   // },
   async created() {
     try {
-      const res = await axios.get(`/books/get-book`)
+      const res = await axios.get(`/books/get-book-list`)
       this.dataArray = res.data.data
       this.tableArray = this.dataArray
       console.log(res)
@@ -218,9 +251,10 @@ export default defineComponent({
       search: '',
       itemsOnTable: 0,
       showModal: false,
-      companyData: {},
+      data: {} as Data,
       dataArray: <Record<string, any>>[],
-      tableArray: <Record<string, any>>[]
+      tableArray: <Record<string, any>>[],
+      dialog: false
     }
   },
 
@@ -248,17 +282,23 @@ export default defineComponent({
   // },
 
   methods: {
+    navToNotes(bookId: any) {
+      sessionStorage.setItem('selecteBookID', bookId)
+      router.push({ path: `/homepage/notes/${bookId}`, params: { bookId } })
+    },
     // openModal(companyData: any) {
     //   this.showModal = true
     //   this.companyData = companyData.id
     //   console.log('--------', companyData)
     // }
-    addBook(payload: Record<string, any>) {
-      //return axios.post('/books/add-book', payload)
-      console.log("add-book");
-      
+    addBook() {
+      axios.post('/books/add-book', this.data)
+      console.log('add-book')
+      console.log(this.data)
+      this.dialog = false
+      location.reload();
     },
-    
+
     deleteData(id: number) {
       // window.alert("hi")
       console.log('id----', id)
@@ -339,11 +379,13 @@ export default defineComponent({
         return
       }
 
+      // console.log(this.tableArray);
+
       this.tableArray = this.tableArray.filter((item: Record<string, any>) => {
         return (
-          searchRegExp.test(item.company) ||
-          searchRegExp.test(item.contact) ||
-          searchRegExp.test(item.country)
+          searchRegExp.test(item.book) ||
+          searchRegExp.test(item.author) ||
+          searchRegExp.test(item.booksmith)
         )
       })
 
@@ -416,7 +458,7 @@ svg {
   right: 145px;
   width: 3.5rem;
   height: 2rem;
-  padding: 5px;
+  padding: 3px;
   text-align: center;
   border: 1px solid grey;
   border-radius: 5px;
