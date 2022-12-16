@@ -116,6 +116,27 @@ let bookService = {
       };
     }
   },
+  async delete(id) {
+    try {
+      let response = await Book.deleteOne({ _id: id });
+
+      return {
+        status: http_code.OK,
+        data: {
+          message: "Book deleted successfully.",
+          success: response.acknowledged,
+        },
+      };
+    } catch (error) {
+      return {
+        status: http_code.INTERNAL_SERVER_ERROR,
+        data: {
+          status: false,
+          message: error.message,
+        },
+      };
+    }
+  },
   // getBook: async (_id) => {
   //   try {
   //     let response = await Book.findById(

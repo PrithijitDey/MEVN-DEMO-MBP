@@ -1,5 +1,6 @@
 <template class="h-full w-full">
   <div class="table-container">
+    <h2>List of Users</h2>
     <v-card-title class="search">
       <v-text-field
         class="search-text-field"

@@ -1,5 +1,6 @@
 <template class="h-full w-full">
   <div class="table-container">
+    <h2>List of Books</h2>
     <v-card-title class="search">
       <v-text-field
         class="search-text-field"
@@ -283,7 +284,7 @@ export default defineComponent({
 
   methods: {
     navToNotes(bookId: any) {
-      sessionStorage.setItem('selecteBookID', bookId)
+      sessionStorage.setItem('selectedBookID', bookId)
       router.push({ path: `/homepage/notes/${bookId}`, params: { bookId } })
     },
     // openModal(companyData: any) {
@@ -296,7 +297,7 @@ export default defineComponent({
       console.log('add-book')
       console.log(this.data)
       this.dialog = false
-      location.reload();
+      location.reload()
     },
 
     deleteData(id: number) {

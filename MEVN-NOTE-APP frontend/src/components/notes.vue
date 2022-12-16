@@ -18,7 +18,7 @@
         </svg>
         Add Notes</v-btn
       >
-      <!-- <span>{{ bookID }}</span> -->
+      <span>{{ bookDetails.book }}</span>
     </header>
     <div
       class="notes-container"
@@ -40,14 +40,17 @@
           top: `${note.y}px`,
           left: `${note.x}px`
         }"
+        @dblclick="focusNote(note.id)"
       >
         <textarea
           type="text"
           name="input"
           class="note-input"
+          :id="`text-${note.id}`"
           placeholder="Type something..."
           :value="note.text"
           @blur="e => editNoteText(note.id, e)"
+          style="pointer-events: none;"
         ></textarea>
       </div>
     </div>
@@ -105,7 +108,7 @@ export default defineComponent({
       notes: [] as Note[],
       tempNotes: [] as Note[],
       elementID: Number,
-      bookId: sessionStorage.getItem('selecteBookID'),
+      bookId: sessionStorage.getItem('selectedBookID'),
       bookDetails: {} as Book
     }
   },
@@ -137,6 +140,8 @@ export default defineComponent({
     async updateNote(data: any) {
       try {
         const res = await axios.put(`/books/update?id=${this.bookId}`, data)
+        this.notes = res.data.data.notes
+        this.tempNotes = this.notes
       } catch (error) {
         console.log(error)
       }
@@ -147,35 +152,67 @@ export default defineComponent({
     //   this.editNote(this.elementID, e.x, e.y)
     // },
     dragEnd(e: any, id: any) {
-      this.editNote(id, e.x, e.y)
+      if (e.y > 630) {
+        console.log('delete note')
+        this.notes = this.tempNotes.filter(note => note.id !== id)
+        console.log(this.notes)
+        this.bookDetails.notes = this.notes
+        this.updateNote(this.bookDetails)
+      } else {
+        console.log('less than 630')
+        this.editNote(id, e.x, e.y)
+      }
+
       var element = document.getElementById('delete-area')
-      element!.style.opacity = '0'
+      element!.style.display = 'none'
     },
     dragStart(e: any) {
       var element = document.getElementById('delete-area')
-      element!.style.opacity = '1'
+      element!.style.display = 'block'
     },
     editNote(id: any, newX: any, newY: any) {
+      const filteredNote =
+        this.tempNotes.find(note => note.id === id) || ({} as Note)
       if (newX > 280 && newY > 130) {
-        this.tempNotes[id - 1].x = newX - 280
-        this.tempNotes[id - 1].y = newY
+        filteredNote.x = newX - 280
+        filteredNote.y = newY
       } else if (newX < 280 && newY > 130) {
-        this.tempNotes[id - 1].x = 0
-        this.tempNotes[id - 1].y = newY
+        filteredNote.x = 0
+        filteredNote.y = newY
       } else if (newX > 280 && newY < 130) {
-        this.tempNotes[id - 1].x = newX - 280
-        this.tempNotes[id - 1].y = 130
+        filteredNote.x = newX - 280
+        filteredNote.y = 130
       } else {
-        this.tempNotes[id - 1].x = 0
-        this.tempNotes[id - 1].y = 130
+        filteredNote.x = 0
+        filteredNote.y = 130
       }
       this.bookDetails.notes = this.tempNotes
       this.updateNote(this.bookDetails)
+      var element = document.getElementById(`text-${id}`)
+      element!.style.pointerEvents = 'none'
     },
     editNoteText(id: any, e: any) {
-      this.tempNotes[id - 1].text = e.target.value
+      const filteredNote =
+        this.tempNotes.find(note => note.id === id) || ({} as Note)
+      filteredNote.text = e.target.value
       this.bookDetails.notes = this.tempNotes
       this.updateNote(this.bookDetails)
+      var element = document.getElementById(`text-${id}`)
+      element!.style.pointerEvents = 'none'
+    },
+    focusNote(id: number) {
+      var element = document.getElementById(`text-${id}`)
+      element!.style.pointerEvents = 'all'
+      const editorElm: HTMLElement | null = document.querySelector(
+        `draggable-${id}`
+      )
+      const contentEditableElm: HTMLElement | null = editorElm
+        ? editorElm.querySelector('note-input')
+        : null
+
+      // this.isNoteInFocus[index] = true
+      contentEditableElm?.focus()
+      console.log('db click')
     }
   },
   getNoteId() {},
@@ -228,14 +265,13 @@ export default defineComponent({
   border-radius: 5px;
 }
 .delete-zone {
-  opacity: 0;
   position: absolute;
   bottom: 0;
   right: 0;
   height: 60px;
   width: 100%;
   align-items: center;
-  display: flex;
+  display: none;
   justify-content: center;
   background: hsla(10%, 74%, 52%, 1);
   background: linear-gradient(
@@ -252,6 +288,8 @@ export default defineComponent({
   padding: 12px 0px 12px 30px;
   height: 60px;
   text-align: start;
+  display: flex;
+  justify-content: space-between;
 }
 .notes-container {
   height: calc(100vh - 130px);
@@ -269,6 +307,7 @@ export default defineComponent({
   // opacity: 0;
   animation-name: drag;
   animation-duration: 4s;
+  // pointer-events: none;
 }
 .note-input {
   height: 100%;
@@ -278,6 +317,7 @@ export default defineComponent({
   line-height: 20px;
   padding: 10px;
   resize: none;
+  // pointer-events: none;
 }
 
 .note-input::-webkit-scrollbar {

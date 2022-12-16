@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <router-view/>
+      <router-view />
     </v-main>
   </v-app>
 </template>
@@ -10,16 +10,16 @@
 import { defineComponent } from 'vue'
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://localhost:3001';
+axios.defaults.baseURL = 'http://localhost:3001'
 
 export default defineComponent({
   name: 'App',
 
-  data () {
+  data() {
     return {
       //
     }
-  },
+  }
 })
 </script>
 <style lang="scss">
@@ -56,10 +56,14 @@ nav {
   /* Align to top (flex-direction property value is set to column) */
   justify-content: flex-start;
 }
-.v-input__append{
-  display: none !important;  
+.v-input__append {
+  display: none !important;
 }
-select{
+select {
   appearance: auto !important;
+}
+
+body {
+  overflow: hidden;
 }
 </style>
